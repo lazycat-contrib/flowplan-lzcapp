@@ -1,0 +1,89 @@
+application:
+  subdomain: flowplan
+  multi_instance: false
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://flowplan:3000/
+
+services:
+  flowplan:
+    # upstream: ghcr.io/yannicschuller/flowplan:0.8.4
+    image: registry.lazycat.cloud/czyt/yannicschuller/flowplan:0.8.4
+    # 镜像里以 node(1000) 运行；run_as 让系统把 /lzcapp 下的持久目录按同一
+    # 身份映射 owner，容器可以正常读写挂载点。
+    run_as: "1000:1000"
+    environment:
+      # 公开地址：登录跳转、Cookie、通行密钥、邮件里的链接都以它为准。
+      # 懒猫微服是 HTTPS，直接用应用实例域名拼出来。
+      - APP_URL=https://{{ .S.AppDomain }}
+      - FLOWPLAN_DATA_DIR=/lzcapp/var/data
+      - NODE_ENV=production
+      # 微服入口是反向代理，转发头里的地址才是真实客户端
+      - FLOWPLAN_TRUSTED_PROXIES=1
+      # 会话时长（小时，1-24）
+      - SESSION_HOURS=8
+      # 每个工作区的存储配额（MB），0 表示不限制
+      - FLOWPLAN_WORKSPACE_QUOTA_MB={{ .U.workspace_quota_mb }}
+      # 加密出站内容（备份、S3 对象、导出）以及存储在库里的接口密钥。
+      # 用 stable_secret 生成，同一微服同一应用内保持稳定，重启与重建都不变。
+      - FLOWPLAN_ENCRYPTION_KEY={{ stable_secret "flowplan#encryption_key" }}
+{{if .U.ai_enabled}}
+      # ---- AI ----
+      - FLOWPLAN_AI=on
+{{if .U.ai_provider}}
+      - FLOWPLAN_AI_PROVIDER={{ .U.ai_provider }}
+{{end}}
+{{if .U.ai_base_url}}
+      - FLOWPLAN_AI_BASE_URL={{ .U.ai_base_url }}
+{{end}}
+{{if .U.ai_api_key}}
+      - FLOWPLAN_AI_API_KEY={{ .U.ai_api_key }}
+{{end}}
+{{if .U.ai_model}}
+      - FLOWPLAN_AI_MODEL={{ .U.ai_model }}
+{{end}}
+{{if .U.ai_access}}
+      - FLOWPLAN_AI_ACCESS={{ .U.ai_access }}
+{{end}}
+{{end}}
+{{if .U.oidc_issuer}}
+      # ---- 单点登录 OIDC ----
+      - OIDC_ISSUER={{ .U.oidc_issuer }}
+      - OIDC_CLIENT_ID={{ .U.oidc_client_id }}
+{{if .U.oidc_client_secret}}
+      - OIDC_CLIENT_SECRET={{ .U.oidc_client_secret }}
+{{end}}
+{{if .U.oidc_admin_group}}
+      - OIDC_ADMIN_GROUP={{ .U.oidc_admin_group }}
+{{end}}
+{{end}}
+{{if .U.smtp_host}}
+      # ---- 邮件 SMTP ----
+      - SMTP_HOST={{ .U.smtp_host }}
+      - SMTP_PORT={{ .U.smtp_port }}
+{{if .U.smtp_user}}
+      - SMTP_USER={{ .U.smtp_user }}
+{{end}}
+{{if .U.smtp_password}}
+      - SMTP_PASSWORD={{ .U.smtp_password }}
+{{end}}
+{{if .U.smtp_from}}
+      - SMTP_FROM={{ .U.smtp_from }}
+{{end}}
+{{end}}
+{{if .U.s3_bucket}}
+      # ---- S3 存储（文件与数据库持续备份）----
+      - S3_BUCKET={{ .U.s3_bucket }}
+{{if .U.s3_endpoint}}
+      - S3_ENDPOINT={{ .U.s3_endpoint }}
+{{end}}
+{{if .U.s3_access_key}}
+      - S3_ACCESS_KEY_ID={{ .U.s3_access_key }}
+{{end}}
+{{if .U.s3_secret_key}}
+      - S3_SECRET_ACCESS_KEY={{ .U.s3_secret_key }}
+{{end}}
+      - S3_REGION={{ .U.s3_region }}
+{{end}}

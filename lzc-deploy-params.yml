@@ -1,0 +1,282 @@
+params:
+  # ---- AI（可选）----
+  - id: ai_enabled
+    type: bool
+    name: "Enable AI"
+    description: "Turn on the AI features (natural-language search, writing helpers). The provider and key below are used."
+    default_value: "false"
+    optional: true
+
+  - id: ai_provider
+    type: string
+    name: "AI provider"
+    description: "ollama, openai (any OpenAI-compatible service), anthropic or gemini. Leave empty to use Ollama when its address is set."
+    default_value: ""
+    optional: true
+
+  - id: ai_base_url
+    type: string
+    name: "AI base URL"
+    description: "Address of the provider, e.g. https://api.deepseek.com/v1 for an OpenAI-compatible service. Leave empty for the provider default."
+    default_value: ""
+    optional: true
+
+  - id: ai_api_key
+    type: secret
+    name: "AI API key"
+    description: "Key for the provider above. Without a key the AI features cannot answer anything."
+    default_value: ""
+    optional: true
+
+  - id: ai_model
+    type: string
+    name: "AI model"
+    description: "Model used by default, e.g. deepseek-chat or gpt-4o-mini."
+    default_value: ""
+    optional: true
+
+  - id: ai_access
+    type: string
+    name: "Who may use AI"
+    description: "everyone or selected (only people an administrator enables)."
+    default_value: "everyone"
+    optional: true
+
+  # ---- 单点登录 OIDC（可选）----
+  - id: oidc_issuer
+    type: string
+    name: "OIDC issuer"
+    description: "Address of the OpenID Connect provider (Keycloak, Authentik, Zitadel, Entra ID...). Leave empty to sign in with e-mail and password or a passkey only. The redirect URI at the provider is <APP_URL>/api/auth/callback."
+    default_value: ""
+    optional: true
+
+  - id: oidc_client_id
+    type: string
+    name: "OIDC client ID"
+    description: "Client ID of the Flowplan application at the provider."
+    default_value: "flowplan"
+    optional: true
+
+  - id: oidc_client_secret
+    type: secret
+    name: "OIDC client secret"
+    description: "Client secret of the Flowplan application at the provider."
+    default_value: ""
+    optional: true
+
+  - id: oidc_admin_group
+    type: string
+    name: "OIDC administrator group"
+    description: "Members of this group administer the instance. Leave empty to make the first signed-in account the administrator."
+    default_value: ""
+    optional: true
+
+  # ---- 邮件 SMTP（可选）----
+  - id: smtp_host
+    type: string
+    name: "SMTP host"
+    description: "Address of the mail server, e.g. smtp.example.com. Leave empty to send no e-mail (invitations and password resets then do not work)."
+    default_value: ""
+    optional: true
+
+  - id: smtp_port
+    type: string
+    name: "SMTP port"
+    description: "Port of the mail server. Port 465 uses TLS directly, others STARTTLS."
+    default_value: "587"
+    optional: true
+
+  - id: smtp_user
+    type: string
+    name: "SMTP user"
+    description: "User name for the mail server. Leave empty for a server without authentication."
+    default_value: ""
+    optional: true
+
+  - id: smtp_password
+    type: secret
+    name: "SMTP password"
+    description: "Password for the mail server."
+    default_value: ""
+    optional: true
+
+  - id: smtp_from
+    type: string
+    name: "Sender address"
+    description: "Address that outgoing e-mail is sent from, e.g. flowplan@example.com."
+    default_value: ""
+    optional: true
+
+  # ---- 存储 S3（可选）----
+  - id: s3_bucket
+    type: string
+    name: "S3 bucket"
+    description: "Bucket for files and the continuous database backup. Leave empty to keep everything in the app's own storage."
+    default_value: ""
+    optional: true
+
+  - id: s3_endpoint
+    type: string
+    name: "S3 endpoint"
+    description: "Address of the S3-compatible storage, e.g. https://s3.example.com or http://minio:9000."
+    default_value: ""
+    optional: true
+
+  - id: s3_access_key
+    type: string
+    name: "S3 access key"
+    description: "Access key with read and write permission for the bucket."
+    default_value: ""
+    optional: true
+
+  - id: s3_secret_key
+    type: secret
+    name: "S3 secret key"
+    description: "Secret key for the bucket."
+    default_value: ""
+    optional: true
+
+  - id: s3_region
+    type: string
+    name: "S3 region"
+    description: "Region of the bucket."
+    default_value: "us-east-1"
+    optional: true
+
+  # ---- 其他 ----
+  - id: workspace_quota_mb
+    type: string
+    name: "Storage quota per workspace (MB)"
+    description: "Default storage quota per workspace in MB. 0 means unlimited."
+    default_value: "0"
+    optional: true
+
+locales:
+  zh:
+    ai_enabled:
+      name: "启用 AI"
+      description: "打开 AI 功能（自然语言检索、写作助手等），使用下面配置的服务商与密钥。"
+    ai_provider:
+      name: "AI 服务商"
+      description: "ollama、openai（任何 OpenAI 兼容服务）、anthropic 或 gemini。若只填了 Ollama 地址，则使用 Ollama。"
+    ai_base_url:
+      name: "AI 接口地址"
+      description: "服务商的接口地址，例如 OpenAI 兼容服务填 https://api.deepseek.com/v1。留空则用服务商默认地址。"
+    ai_api_key:
+      name: "AI API 密钥"
+      description: "上面服务商的密钥。没有密钥，AI 功能无法回答任何问题。"
+    ai_model:
+      name: "AI 模型"
+      description: "默认使用的模型，例如 deepseek-chat 或 gpt-4o-mini。"
+    ai_access:
+      name: "谁可以用 AI"
+      description: "everyone（所有人）或 selected（只有管理员启用的成员）。"
+    oidc_issuer:
+      name: "OIDC 签发方"
+      description: "OpenID Connect 服务商地址（Keycloak、Authentik、Zitadel、Entra ID 等）。留空则只用邮箱密码或通行密钥登录。在服务商侧的回调地址是 <APP_URL>/api/auth/callback。"
+    oidc_client_id:
+      name: "OIDC 客户端 ID"
+      description: "Flowplan 在服务商侧的客户端 ID。"
+    oidc_client_secret:
+      name: "OIDC 客户端密钥"
+      description: "Flowplan 在服务商侧的客户端密钥。"
+    oidc_admin_group:
+      name: "OIDC 管理员组"
+      description: "该组成员管理整个实例。留空则第一个登录的账号成为管理员。"
+    smtp_host:
+      name: "SMTP 服务器"
+      description: "邮件服务器地址，例如 smtp.example.com。留空则不发邮件（邀请与密码重置将不可用）。"
+    smtp_port:
+      name: "SMTP 端口"
+      description: "邮件服务器端口。465 端口直接使用 TLS，其余使用 STARTTLS。"
+    smtp_user:
+      name: "SMTP 用户名"
+      description: "邮件服务器的用户名。留空表示不需要认证。"
+    smtp_password:
+      name: "SMTP 密码"
+      description: "邮件服务器的密码。"
+    smtp_from:
+      name: "发件地址"
+      description: "发出邮件时使用的发件人地址，例如 flowplan@example.com。"
+    s3_bucket:
+      name: "S3 存储桶"
+      description: "存放文件与数据库持续备份的存储桶。留空则全部保存在应用自己的存储里。"
+    s3_endpoint:
+      name: "S3 接口地址"
+      description: "S3 兼容存储的地址，例如 https://s3.example.com 或 http://minio:9000。"
+    s3_access_key:
+      name: "S3 访问密钥 ID"
+      description: "对存储桶有读写权限的访问密钥 ID。"
+    s3_secret_key:
+      name: "S3 访问密钥"
+      description: "存储桶的访问密钥。"
+    s3_region:
+      name: "S3 区域"
+      description: "存储桶所在区域。"
+    workspace_quota_mb:
+      name: "每个工作区存储配额（MB）"
+      description: "每个工作区的默认存储配额（MB），0 表示不限制。"
+  en:
+    ai_enabled:
+      name: "Enable AI"
+      description: "Turn on the AI features (natural-language search, writing helpers). The provider and key below are used."
+    ai_provider:
+      name: "AI provider"
+      description: "ollama, openai (any OpenAI-compatible service), anthropic or gemini. Leave empty to use Ollama when its address is set."
+    ai_base_url:
+      name: "AI base URL"
+      description: "Address of the provider, e.g. https://api.deepseek.com/v1 for an OpenAI-compatible service. Leave empty for the provider default."
+    ai_api_key:
+      name: "AI API key"
+      description: "Key for the provider above. Without a key the AI features cannot answer anything."
+    ai_model:
+      name: "AI model"
+      description: "Model used by default, e.g. deepseek-chat or gpt-4o-mini."
+    ai_access:
+      name: "Who may use AI"
+      description: "everyone (all) or selected (only people an administrator enables)."
+    oidc_issuer:
+      name: "OIDC issuer"
+      description: "Address of the OpenID Connect provider (Keycloak, Authentik, Zitadel, Entra ID...). Leave empty to sign in with e-mail and password or a passkey only. The redirect URI at the provider is <APP_URL>/api/auth/callback."
+    oidc_client_id:
+      name: "OIDC client ID"
+      description: "Client ID of the Flowplan application at the provider."
+    oidc_client_secret:
+      name: "OIDC client secret"
+      description: "Client secret of the Flowplan application at the provider."
+    oidc_admin_group:
+      name: "OIDC administrator group"
+      description: "Members of this group administer the instance. Leave empty to make the first signed-in account the administrator."
+    smtp_host:
+      name: "SMTP host"
+      description: "Address of the mail server, e.g. smtp.example.com. Leave empty to send no e-mail (invitations and password resets then do not work)."
+    smtp_port:
+      name: "SMTP port"
+      description: "Port of the mail server. Port 465 uses TLS directly, others STARTTLS."
+    smtp_user:
+      name: "SMTP user"
+      description: "User name for the mail server. Leave empty for a server without authentication."
+    smtp_password:
+      name: "SMTP password"
+      description: "Password for the mail server."
+    smtp_from:
+      name: "Sender address"
+      description: "Address that outgoing e-mail is sent from, e.g. flowplan@example.com."
+    s3_bucket:
+      name: "S3 bucket"
+      description: "Bucket for files and the continuous database backup. Leave empty to keep everything in the app's own storage."
+    s3_endpoint:
+      name: "S3 endpoint"
+      description: "Address of the S3-compatible storage, e.g. https://s3.example.com or http://minio:9000."
+    s3_access_key:
+      name: "S3 access key"
+      description: "Access key with read and write permission for the bucket."
+    s3_secret_key:
+      name: "S3 secret key"
+      description: "Secret key for the bucket."
+    s3_region:
+      name: "S3 region"
+      description: "Region of the bucket."
+    workspace_quota_mb:
+      name: "Storage quota per workspace (MB)"
+      description: "Default storage quota per workspace in MB. 0 means unlimited."

@@ -1,0 +1,21 @@
+package: community.lazycat.app.flowplan
+version: 0.8.4
+name: Flowplan
+description: "Open-source alternative to Notion and AppFlowy: documents, databases, whiteboards and a daily journal, self-hosted"
+min_os_version: 1.6.0
+author: yannicschuller
+homepage: https://flowplan.org
+license: AGPL-3.0
+locales:
+  zh:
+    name: "Flowplan"
+    description: "开源自托管的 Notion / AppFlowy 替代品：文档、数据库、白板与每日手账，单容器 + SQLite，无需 Postgres 或 Redis"
+  zh_CN:
+    name: "Flowplan"
+    description: "开源自托管的 Notion / AppFlowy 替代品：文档、数据库、白板与每日手账，单容器 + SQLite，无需 Postgres 或 Redis"
+  en:
+    name: "Flowplan"
+    description: "Open-source alternative to Notion and AppFlowy: documents, databases, whiteboards and a daily journal, self-hosted"
+permissions:
+  required:
+    - net.internet
