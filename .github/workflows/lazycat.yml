@@ -1,15 +1,6 @@
 name: Publish LazyCat application
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/lazycat-action.yml
-      - .github/workflows/lazycat.yml
-      - lzc-build.yml
-      - lzc-deploy-params.yml
-      - lzc-manifest.yml
-      - package.yml
   pull_request:
     paths:
       - .github/lazycat-action.yml
@@ -20,6 +11,9 @@ on:
       - package.yml
   schedule:
     # 23:00 Asia/Shanghai (UTC+8)
+    # 定时与手动触发会先做镜像检查：上游有新 tag 时，Action 把镜像复制到懒猫镜像源
+    # 并改写 manifest，然后构建发布。不要加 push 触发器：image 版本源的 push
+    # 事件会跳过镜像检查，直接用可能尚未转存的镜像引用打包。
     - cron: "0 13 * * *"
   workflow_dispatch:
 
