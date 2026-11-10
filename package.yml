@@ -1,5 +1,5 @@
 package: community.lazycat.app.flowplan
-version: 0.9.1
+version: 0.9.2
 name: Flowplan
 description: "Open-source alternative to Notion and AppFlowy: documents, databases, whiteboards and a daily journal, self-hosted"
 min_os_version: 1.6.0

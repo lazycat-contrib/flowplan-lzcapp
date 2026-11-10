@@ -10,8 +10,8 @@ services:
   flowplan:
     # 懒猫镜像源里的地址由 Action 在首次转存后写入（tag 是源镜像 digest 的前缀）。
     # 这里不要手写 upstream 注释：那会被当成"已经转存过"的基线，复制会被跳过。
-    # upstream: ghcr.io/yannicschuller/flowplan:0.9.1
-    image: registry.lazycat.cloud/czyt/yannicschuller/flowplan:7109ec1bbf3d59dc
+    # upstream: ghcr.io/yannicschuller/flowplan:0.9.2
+    image: registry.lazycat.cloud/czyt/yannicschuller/flowplan:062576643b2eb078
     # 镜像里以 node(1000) 运行；run_as 让系统把 /lzcapp 下的持久目录按同一
     # 身份映射 owner，容器可以正常读写挂载点。
     run_as: "1000:1000"
